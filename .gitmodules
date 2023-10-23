@@ -1,0 +1,3 @@
+[submodule "hannkim"]
+	path = hannkim
+	url = https://github.com/Kimhan-nah/hello-jpa.git
