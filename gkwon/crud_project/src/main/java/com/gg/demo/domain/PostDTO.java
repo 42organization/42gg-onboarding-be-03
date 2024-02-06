@@ -1,6 +1,8 @@
 package com.gg.demo.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
@@ -9,43 +11,27 @@ public class PostDTO {
 
     @Getter
     @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class createPostDto
     {
         private String title;
         private String content;
-
-        public createPostDto() {}
-        public createPostDto(String title, String content)
-        {
-            this.title = title;
-            this.content = content;
-        }
+        private String author;
+        private final int viewCnt = 0;
+        private final int likeCnt = 0;
     }
 
     @Getter
-    @Setter
-    public static class deletePostDto
-    {
-        private Long id;
-
-        public deletePostDto(Long id)
-        {
-            this.id = id;
-        }
-    }
-
-    @Getter
-    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class readPostDto
     {
-        private Long id;
+        private Long postId;
         private String title;
-
-        public readPostDto() {}
-        public readPostDto(Long id, String title)
-        {
-            this.id = id;
-            this.title = title;
-        }
+        private String content;
+        private String author;
+        private Long viewCnt;
+        private Long likeCnt;
     }
 }
