@@ -59,7 +59,8 @@ public class CommentService {
 
     // 댓글 수정
     public Long updateComment(Long id, CommentRequestDto commentRequestDto) {
-        Comment comment = commentRepository.findById(id).get();
+        Comment comment = commentRepository.findById(id).orElseThrow(()
+                -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다."));
         comment.update(commentRequestDto.getBody());
         commentRepository.save(comment);
 
