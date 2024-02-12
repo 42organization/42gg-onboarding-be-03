@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DB Data Display</title>
+</head>
+<body>
+<h1>DB에 Post 보내기</h1>
+<form id="postForm">
+    <input type="text" id="title" placeholder="Enter title" required>
+    <input type="submit" value="Post">
+</form>
+
+<h2>DB 전체 목록</h2>
+<ul id="postsList"></ul>
+
+<script>
+    document.getElementById('postForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // 폼 기본 제출 이벤트 방지
+
+        const titleValue = document.getElementById('title').value;
+        const postData = { title: titleValue };
+
+        // POST 요청으로 서버에 데이터 전송
+        fetch('/posts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postData)
+        })
+            .then(response => response.json())
+            .then(post => {
+                alert('Post 제출 성공');
+                fetchPosts(); // 데이터 제출 후 모든 포스트를 다시 가져옵니다.
+            })
+            .catch(error => {
+                alert('Post 제출 실패');
+                console.error('Error:', error);
+            });
+    });
+
+    function fetchPosts() {
+        fetch('/posts')
+            .then(response => response.json())
+            .then(posts => {
+                const postsList = document.getElementById('postsList');
+                postsList.innerHTML = ''; // 목록 초기화
+                posts.forEach(post => {
+                    const li = document.createElement('li');
+                    li.textContent = post.title;
+
+                    // 삭제 버튼 추가
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.addEventListener('click', function() {
+                        fetch(`/posts/${post.id}`, { method: 'DELETE' })
+                            .then(() => {
+                                alert('Delete 제출 성공');
+                                fetchPosts();
+                            })
+                            .catch(error => {
+                                alert('Delete 제출 실패');
+                                console.error('Error:', error);
+                            });
+                    });
+                    li.appendChild(deleteButton);
+
+                    // 수정 버튼 추가
+                    const updateButton = document.createElement('button');
+                    updateButton.textContent = 'Put';
+                    updateButton.addEventListener('click', function() {
+                        const newTitle = prompt('Update', post.title);
+                        if (newTitle) {
+                            const updatedPost = { title: newTitle };
+                            fetch(`/posts/${post.id}`, {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(updatedPost)
+                            })
+                                .then(() => {
+                                    alert('Update 제출 성공(Put 메소드)');
+                                    fetchPosts();
+                                })
+                                .catch(error => {
+                                    alert('Update 제출 실패(Put 메소드)');
+                                    console.error('Error:', error);
+                                });
+                        }
+                    });
+                    li.appendChild(updateButton);
+
+                    postsList.appendChild(li);
+                });
+            })
+            .catch(error => console.error('Error fetching posts:', error));
+    }
+
+    fetchPosts();
+</script>
+</body>
+</html>
