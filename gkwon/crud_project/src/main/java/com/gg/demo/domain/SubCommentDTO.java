@@ -20,13 +20,6 @@ public class SubCommentDTO {
     }
 
     @Getter
-    @AllArgsConstructor
-    public static class deleteSubCommentDto
-    {
-        private Long id;
-    }
-
-    @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class readSubCommentDto

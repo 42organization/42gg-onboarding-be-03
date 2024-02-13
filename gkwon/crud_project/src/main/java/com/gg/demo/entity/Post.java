@@ -1,32 +1,32 @@
 package com.gg.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "CRUD")
+@Table(name = "Post")
 @Getter
 @Setter
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(length = 100, nullable = false)
     private String title;
-    @Column(nullable = false)
-    private String content;
 
-    public Post(String title, String content)
-    {
+    @Embedded
+    private CommonAtt att;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
+
+    public Post(String title, CommonAtt newAtt) {
         this.title = title;
-        this.content = content;
-    }
-
-    public Post() {
-
+        this.att = newAtt;
     }
 }

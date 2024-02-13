@@ -1,6 +1,7 @@
 package com.gg.demo.service;
 
 import com.gg.demo.domain.PostDTO;
+import com.gg.demo.entity.CommonAtt;
 import com.gg.demo.entity.Post;
 import com.gg.demo.jpa.PostRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,22 +21,39 @@ public class PostService {
     }
 
     public void createPost(PostDTO.createPostDto post) {
-        Post newEntity = new Post(post.getTitle(), post.getContent());
+        CommonAtt newAtt = new CommonAtt("test_author", post.getContent(), 0L);
+        Post newEntity = new Post(post.getTitle(), newAtt);
         repo.save(newEntity);
     }
 
-    public PostDTO.createPostDto getPost(Long id) {
+    public PostDTO.readPostDto getPost(Long id) {
         Optional<Post> optionalEPost = repo.findById(id);
-        return optionalEPost.map(post -> new PostDTO.createPostDto(post.getTitle(), post.getContent()))
-                .orElse(null);
+        if (optionalEPost.isPresent()) {
+            Post post = optionalEPost.get();
+            return new PostDTO.readPostDto(
+                    id, // 게시물 ID
+                    post.getTitle(), // 게시물 제목
+                    post.getAtt().getContent(), // 게시물 내용
+                    post.getAtt().getAuthor(), // 게시물 작성자
+                    post.getAtt().getLikeCnt(), // 게시물 좋아요 수
+                    post.getComments() // 게시물의 댓글 목록
+            );
+        } else {
+            // 주어진 ID에 해당하는 게시물이 없는 경우 null 반환
+            return null;
+        }
     }
 
-    public List<PostDTO.readPostDto> getAllPosts() {
+    public List<PostDTO.getAllPostDto> getAllPosts() {
         List<Post> postList = repo.findAll();
-        List<PostDTO.readPostDto> dtoList = new ArrayList<>();
+        List<PostDTO.getAllPostDto> dtoList = new ArrayList<>();
 
         for (Post post : postList) {
-            PostDTO.readPostDto dto = new PostDTO.readPostDto(post.getId(), post.getTitle());
+            PostDTO.getAllPostDto dto = new PostDTO.getAllPostDto(
+                    post.getId(),
+                    post.getTitle(),
+                    post.getAtt().getAuthor(),
+                    post.getAtt().getLikeCnt());
             dtoList.add(dto);
         }
         return dtoList;
@@ -46,9 +64,12 @@ public class PostService {
         if (optionalEPost.isPresent()) {
             Post existingPost = optionalEPost.get();
             existingPost.setTitle(update.getTitle());
-            existingPost.setContent(update.getContent());
+            existingPost.getAtt().setContent(update.getContent());
             repo.save(existingPost);
-            return new PostDTO.createPostDto(existingPost.getTitle(), existingPost.getContent());
+            return new PostDTO.createPostDto(
+                    update.getTitle(),
+                    update.getContent(),
+                    existingPost.getAtt().getAuthor());
         }
         return null; // or throw an exception
     }
