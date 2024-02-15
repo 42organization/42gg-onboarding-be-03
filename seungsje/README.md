@@ -220,7 +220,7 @@
             ```
             
     
-    ![Untitled](42%20gg%203%E1%84%92%E1%85%AC%E1%84%8E%E1%85%A1%2077d4b519a6a644818de9ffe2b50f75d7/Untitled.png)
+    ![Untitled](image/Untitled.png)
     
     - 양방향(외래키가 주 테이블에 있는 경우)
         - 예제 코드
@@ -249,7 +249,7 @@
             ```
             
     
-    ![Untitled](42%20gg%203%E1%84%92%E1%85%AC%E1%84%8E%E1%85%A1%2077d4b519a6a644818de9ffe2b50f75d7/Untitled%201.png)
+    ![Untitled1](image/Untitled1.png)
     
     - 장단점(외래키가 대상 테이블에 있는 경우)
         - 대상 테이블에 외래키를 위치시킨다.
@@ -283,7 +283,7 @@
             ```
             
     
-    ![Untitled](42%20gg%203%E1%84%92%E1%85%AC%E1%84%8E%E1%85%A1%2077d4b519a6a644818de9ffe2b50f75d7/Untitled%202.png)
+    ![Untitled2](image/Untitled2.png)
     
     - N+1문제
         
@@ -303,11 +303,11 @@
         
 - Entity
 
-![Untitled](42%20gg%203%E1%84%92%E1%85%AC%E1%84%8E%E1%85%A1%2077d4b519a6a644818de9ffe2b50f75d7/Untitled%203.png)
+    ![Untitled](image/Untitled3.png)
 
 - Table
 
-![Untitled](42%20gg%203%E1%84%92%E1%85%AC%E1%84%8E%E1%85%A1%2077d4b519a6a644818de9ffe2b50f75d7/Untitled%204.png)
+    ![Untitled](image/Untitled4.png)
 
 ### EX01 Redis
 
